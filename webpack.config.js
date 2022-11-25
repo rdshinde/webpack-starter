@@ -1,48 +1,21 @@
 const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
-const htmlWebpackPlugin = require("html-webpack-plugin");
-module.exports = {
-  mode: "development",
-
-  entry: {
-    bundle: path.resolve(__dirname, "src/index.js"),
+const webpackConfig = {
+  entry: path.resolve(__dirname, "src", "index.js"),
+  performance: {
+    hints: false,
   },
-
   output: {
+    filename: "[name].[contenthash].bundle.js",
     path: path.resolve(__dirname, "dist"),
-    filename: "[name].[contenthash].js",
-    publicPath: "/build/js",
     clean: true,
-    assetModuleFilename: "[name][ext]",
   },
-
-  devtool: "source-map",
-  devServer: {
-    static: {
-      directory: path.resolve(__dirname, "dist"),
-    },
-    liveReload: true,
-    port: 3000,
-    open: true,
-    hot: true,
-    compress: true,
-    historyApiFallback: true,
-    
-  },
-
   module: {
     rules: [
       {
-        test: /\.scss$/,
-        use: ["style-loader", "css-loader", "sass-loader"],
-      },
-      {
-        test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        type: "asset/resource",
-      },
-      {
         test: /\.js$/,
-        exclude: /node_modules/,
+        exclude: /(node_modules)/,
         use: {
           loader: "babel-loader",
           options: {
@@ -50,8 +23,24 @@ module.exports = {
           },
         },
       },
+      {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
+      },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: "asset",
+      },
     ],
   },
+
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: "vanillaJS app",
+      template: path.resolve(__dirname, "src", "index.html"),
+    }),
+  ],
+
   optimization: {
     splitChunks: {
       cacheGroups: {
@@ -64,11 +53,15 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    new htmlWebpackPlugin({
-      title: "Webpack Starter",
-      filename: "index.html",
-      template: path.resolve(__dirname, "src", "template.html"),
-    }),
-  ],
+
+  devtool: "inline-source-map",
+  devServer: {
+    static: path.resolve(__dirname, "dist"),
+    host: "localhost",
+    port: 3000,
+  },
+
+  mode: "production",
 };
+
+module.exports = webpackConfig;

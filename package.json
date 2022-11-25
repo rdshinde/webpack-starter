@@ -4,9 +4,9 @@
   "description": "Webpack 5 starter",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
-    "serve": "webpack serve --open --live-reload",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack serve --open --live-reload",
+    "build": "webpack"
   },
   "repository": {
     "type": "git",
@@ -25,6 +25,7 @@
     "babel-loader": "^8.2.5",
     "css-loader": "^6.7.1",
     "html-webpack-plugin": "^5.5.0",
+    "lodash": "^4.17.21",
     "sass": "^1.54.4",
     "sass-loader": "^13.0.2",
     "style-loader": "^3.3.1",
